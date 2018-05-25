@@ -1,0 +1,23 @@
+{
+    "name": "maxcelos/laravel-utils",
+    "description": "Laravel useful implementations for any project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcelo Barros da Silva",
+            "email": "maxcelos@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Maxcelos\\LaravelUtils\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maxcelos\\LaravelUtils\\UtilsProvider"
+            ]
+        }
+    }
+}
