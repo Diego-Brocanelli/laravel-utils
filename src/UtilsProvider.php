@@ -1,19 +1,36 @@
 <?php
+
 namespace Maxcelos\LaravelUtils;
 
+use Illuminate\Console\Application;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Maxcelos\LaravelUtils\Console\CustomModelMakeCommand;
+use Maxcelos\LaravelUtils\Console\CommandsList;
 
 class UtilsProvider extends ServiceProvider
 {
+    /**
+     * Path to configuration file.
+     *
+     * @return string
+     */
+    public function configPath(): string
+    {
+        return realpath(__DIR__ . '/config/maxcelos.php');
+    }
+
     /**
      * Bootstrap the application services.
      */
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
+        $this->publishes([$this->configPath() => config_path('maxcelos.php')], 'config');
 
         // Custom collection pagination
         Collection::macro('paginate', function ($request){
@@ -51,6 +68,16 @@ class UtilsProvider extends ServiceProvider
             }
 
             return $paginated;
+        });
+    }
+
+    public function register()
+    {
+        //dd($this->configPath());
+        
+        $this->mergeConfigFrom($this->configPath(), 'maxcelos');
+        $this->app->extend('command.model.make', function (){
+            return new CustomModelMakeCommand($this->app->files);
         });
     }
 }

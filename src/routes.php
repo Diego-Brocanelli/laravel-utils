@@ -2,6 +2,6 @@
 
 use Maxcelos\LaravelUtils\LanguageExport;
 
-Route::get('api/language/{lang}', function ($lang) {
+Route::get(config('maxcelos.trans_route'), function ($lang) {
     return LanguageExport::all($lang);
 })->middleware('auth:api');
